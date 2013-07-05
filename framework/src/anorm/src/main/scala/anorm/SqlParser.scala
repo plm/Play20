@@ -126,6 +126,8 @@ trait RowParser[+A] extends (Row => SqlResult[A]) {
     }
   }
 
+  def ~?[B](p: RowParser[B]): RowParser[A ~ Option[B]] = parent.~(p.?)
+
   def >>[B](f: A => RowParser[B]): RowParser[B] = flatMap(f)
 
   def * : ResultSetParser[List[A]] = ResultSetParser.list(parent)
